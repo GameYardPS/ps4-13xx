@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ar" dir="rtl" manifest="cache.appcache">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#07110a">
+    <title>GameYard | تشغيل PS4 HEN</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        overflow: hidden;
+        background: #07110a;
+        color: #dce7dd;
+        font: 15px/1.45 Arial, Tahoma, sans-serif;
+      }
+      body:before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(circle at 50% 46%, rgba(91, 221, 43, .17), transparent 30%),
+          linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+        background-size: auto, 44px 44px, 44px 44px;
+        pointer-events: none;
+      }
+      body:not(.log):after {
+        content: "GAMEYARD • TRIPOLI • CORE BY RAW GAME";
+        position: fixed;
+        right: 0;
+        bottom: 22px;
+        left: 0;
+        color: rgba(255,255,255,.40);
+        text-align: center;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+      }
+
+      #brand {
+        direction: ltr;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 67px;
+        padding: 10px 26px;
+        border-bottom: 1px solid rgba(255,255,255,.10);
+        background: rgba(2, 8, 4, .76);
+      }
+      .brand-name { display: flex; align-items: center; gap: 11px; }
+      #brand img {
+        width: 42px;
+        height: 42px;
+        border: 2px solid rgba(126, 226, 75, .90);
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center 28%;
+        box-shadow: 0 0 0 4px rgba(98,215,45,.08);
+      }
+      #brand b { color: #fff; font-size: 17px; font-weight: 900; letter-spacing: .5px; }
+      #brand small { color: #b9ff8c; font-size: 11px; font-weight: 900; letter-spacing: 1.1px; }
+
+      #spin {
+        position: fixed;
+        top: calc(50% - 14px);
+        left: 50%;
+        width: 54px;
+        height: 54px;
+        margin: -27px 0 0 -27px;
+        border: 4px solid rgba(255,255,255,.11);
+        border-top-color: #8cf153;
+        border-right-color: #62d72d;
+        border-radius: 50%;
+        box-shadow: 0 0 30px rgba(94, 219, 43, .16);
+        animation: spin .85s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      #loading, #msg, #success {
+        position: fixed;
+        top: calc(50% + 34px);
+        right: 18px;
+        left: 18px;
+        text-align: center;
+      }
+      #loading { color: rgba(255,255,255,.82); font-size: 16px; font-weight: 800; }
+      #loading small { display: block; direction: ltr; margin-top: 8px; color: rgba(255,255,255,.42); font-size: 10px; font-weight: 700; letter-spacing: 1.3px; }
+      #msg, #success { display: none; top: 50%; transform: translateY(-50%); }
+      #msg strong, #success strong { display: block; margin-bottom: 8px; font-size: 24px; font-weight: 900; }
+      #msg span, #success span { color: rgba(255,255,255,.62); font-size: 13px; }
+      #msg strong { color: #ff9292; }
+      #success strong { color: #a9ff70; }
+
+      #wrap { padding: 0; }
+      #state, #out { display: none; }
+
+      body.done #spin, body.done #loading,
+      body.fail #spin, body.fail #loading { display: none; }
+      body.done #success { display: block; }
+      body.fail #msg { display: block; }
+
+      /* ?log=1 keeps the original diagnostic output available. */
+      body.log { overflow: auto; }
+      body.log:before, body.log #spin, body.log #loading, body.log #msg, body.log #success { display: none; }
+      body.log #wrap { padding: 14px 18px; }
+      body.log #state { display: block; margin: 0 0 8px; font-size: 21px; font-weight: 900; }
+      body.log #out {
+        direction: ltr;
+        display: block;
+        height: calc(100vh - 122px);
+        overflow-y: auto;
+        padding: 10px 12px;
+        border: 1px solid #1d3822;
+        border-radius: 7px;
+        background: #09110b;
+        color: #cbd7cc;
+        white-space: pre-wrap;
+        font: 12px/1.45 Consolas, monospace;
+      }
+      .ok, .safe { color: #91e967; }
+      .bad, .danger { color: #ff8d8d; }
+      .warn { color: #ffd984; }
+      code { color: #b9ff8c; }
+
+      @media (max-width: 560px) {
+        #brand { padding: 9px 15px; }
+        #brand img { width: 38px; height: 38px; }
+        #brand b { font-size: 15px; }
+        #brand small { font-size: 9px; }
+      }
+      @media (prefers-reduced-motion: reduce) { #spin { animation-duration: 1.6s; } }
+    </style>
+  </head>
+  <body>
+    <div id="brand">
+      <span class="brand-name"><img src="./gameyard-mark.jpg" alt=""><b>GameYard</b></span>
+      <small>PS4 • 13.XX</small>
+    </div>
+    <div id="spin"></div>
+    <div id="loading">جارٍ تشغيل HEN…<small>PLEASE WAIT • DO NOT CLOSE THE PAGE</small></div>
+    <div id="msg"><strong>لم تكتمل العملية</strong><span>أعد تشغيل جهاز PS4 ثم حاول مرة أخرى.</span></div>
+    <div id="success"><strong>تم التشغيل بنجاح</strong><span>يمكنك الآن إغلاق المتصفح والعودة إلى القائمة الرئيسية.</span></div>
+    <div id="wrap">
+      <div id="state"></div>
+      <div id="out"></div>
+    </div>
+    <script type="module">
+      import "./jb.js?v=10";
+    </script>
+  </body>
+</html>

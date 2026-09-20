@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ar" dir="rtl" manifest="cache.appcache">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07110a">
+  <meta name="site-version" content="gameyard-ps4-13xx-v1">
+  <meta name="source-revision" content="raw13g/401f6cc0c27d5ec69f56e7aa740158cd4189c41d">
+  <title>GameYard | PS4 13.XX Host</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: Arial, Tahoma, sans-serif; }
+    body { color: #fff; background: #07110a; }
+    button, a { font: inherit; }
+
+    .shell {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(90deg, rgba(2, 8, 4, .97) 0%, rgba(3, 12, 6, .87) 48%, rgba(2, 8, 4, .70) 100%),
+        url("./gameyard-logo.jpeg") center 28% / cover no-repeat;
+    }
+    .shell:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 42%, rgba(93, 224, 45, .20), transparent 34%),
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: auto, 42px 42px, 42px 42px;
+      pointer-events: none;
+    }
+    .shell:after {
+      content: "";
+      position: absolute;
+      inset: auto -12% -42% -12%;
+      height: 68%;
+      background: radial-gradient(ellipse at center, rgba(87, 219, 38, .14), transparent 65%);
+      pointer-events: none;
+    }
+    header, main, footer { position: relative; z-index: 1; }
+
+    header {
+      direction: ltr;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 46px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(2, 8, 4, .42);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; }
+    .mark {
+      display: block;
+      width: 46px;
+      height: 46px;
+      overflow: hidden;
+      border: 2px solid rgba(126, 226, 75, .92);
+      border-radius: 50%;
+      background: #152118;
+      box-shadow: 0 0 0 5px rgba(98,215,45,.09), 0 10px 28px rgba(52,181,17,.28);
+    }
+    .mark img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 28%; }
+    .brand-copy { display: flex; flex-direction: column; line-height: 1.05; }
+    .brand-copy strong { font-size: 19px; letter-spacing: .2px; }
+    .brand-copy small { margin-top: 5px; color: rgba(255,255,255,.62); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    .version-chip {
+      padding: 9px 15px;
+      border: 1px solid rgba(174,255,122,.28);
+      border-radius: 999px;
+      color: #dfffd0;
+      background: rgba(7, 22, 10, .72);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .7px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.20);
+    }
+
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 34px 24px; }
+    .hero {
+      width: min(790px, 100%);
+      padding: 42px 46px 38px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 30px;
+      background: rgba(3, 11, 5, .78);
+      box-shadow: 0 28px 80px rgba(0,0,0,.48);
+    }
+    .eyebrow {
+      direction: ltr;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 13px;
+      color: #a9ff70;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+    .eyebrow:before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #62d72d; box-shadow: 0 0 0 5px rgba(98,215,45,.14); }
+    h1 { margin: 0; color: #fff; font-size: 68px; font-size: clamp(48px, 7vw, 76px); font-weight: 900; line-height: .96; letter-spacing: -2.5px; }
+    .lede { max-width: 650px; margin: 17px auto 19px; color: #e8f0e9; font-size: 17px; font-weight: 700; line-height: 1.9; }
+    .firmwares { direction: ltr; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 23px; }
+    .firmwares span { min-width: 67px; padding: 7px 10px; border: 1px solid rgba(255,255,255,.11); border-radius: 9px; color: rgba(255,255,255,.82); background: rgba(255,255,255,.05); font-size: 12px; font-weight: 800; }
+
+    .status-card {
+      margin: 0 auto 20px;
+      padding: 15px 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 15px;
+      background: rgba(0,0,0,.25);
+    }
+    #state { min-height: 25px; color: #fff; font-size: 17px; font-weight: 900; }
+    #det { direction: ltr; margin-top: 5px; color: rgba(255,255,255,.64); font-size: 12px; }
+    #det b { color: #dfffd0; font-weight: 900; }
+    #cache { min-height: 18px; margin-top: 6px; color: rgba(255,255,255,.48); font-size: 11px; font-weight: 700; }
+    #cache.cacheok { color: #91e967; }
+    .ok { color: #a9ff70 !important; }
+    .bad { color: #ff8787 !important; }
+    .warn { color: #ffd984 !important; }
+
+    .run {
+      direction: ltr;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      min-width: 300px;
+      padding: 17px 30px;
+      border: 0;
+      border-radius: 17px;
+      color: #07110a;
+      background: linear-gradient(180deg, #a9ff70, #62d72d);
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: 0 16px 38px rgba(72, 196, 28, .30);
+      transition: transform .18s ease, filter .18s ease, opacity .18s ease;
+    }
+    .run:hover, .run:focus { transform: translateY(-2px); filter: brightness(1.08); outline: 2px solid rgba(255,255,255,.72); outline-offset: 3px; }
+    .run:disabled { opacity: .46; cursor: wait; transform: none; filter: grayscale(.25); box-shadow: none; }
+    .play { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; color: #69d934; background: #07110a; font-size: 13px; letter-spacing: 0; }
+    .hint { margin: 15px 0 0; color: rgba(255,255,255,.55); font-size: 11px; line-height: 1.7; }
+    .contact { direction: ltr; display: inline-block; margin-top: 10px; color: #b6ff84; font-size: 13px; font-weight: 900; letter-spacing: .8px; text-decoration: none; }
+    .contact:hover, .contact:focus { color: #e0ffc9; text-decoration: underline; }
+
+    footer { direction: ltr; padding: 16px 24px 22px; text-align: center; color: rgba(255,255,255,.48); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+    @media (max-width: 650px) {
+      header { padding: 17px 16px; }
+      .mark { width: 41px; height: 41px; }
+      .brand-copy small { display: none; }
+      .version-chip { padding: 8px 10px; font-size: 10px; }
+      main { padding: 22px 14px; }
+      .hero { padding: 31px 18px 28px; border-radius: 23px; }
+      h1 { font-size: 49px; letter-spacing: -2px; }
+      .lede { font-size: 15px; line-height: 1.75; }
+      .run { width: 100%; min-width: 0; padding: 16px 20px; }
+    }
+    @media (max-height: 720px) and (min-width: 651px) {
+      header { padding-top: 14px; padding-bottom: 14px; }
+      main { padding-top: 16px; padding-bottom: 16px; }
+      .hero { padding: 27px 38px 25px; }
+      .lede { margin-top: 10px; margin-bottom: 12px; line-height: 1.6; }
+      .firmwares { margin-bottom: 14px; }
+      .status-card { margin-bottom: 14px; padding-top: 11px; padding-bottom: 11px; }
+      footer { padding-top: 8px; padding-bottom: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .run { transition: none; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="./" aria-label="GameYard home">
+        <span class="mark"><img src="./gameyard-mark.jpg" alt="شعار GameYard"></span>
+        <span class="brand-copy"><strong>GameYard</strong><small>Gaming Center</small></span>
+      </a>
+      <span class="version-chip">PS4&nbsp; • &nbsp;13.XX</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="title">
+        <p class="eyebrow">GameYard PS4 Host</p>
+        <h1 id="title">GameYard</h1>
+        <p class="lede">استضافة محلية لتشغيل HEN على أجهزة PlayStation 4 المتوافقة، مع دعم الاستخدام دون اتصال بعد اكتمال التخزين لأول مرة.</p>
+
+        <div class="firmwares" aria-label="الإصدارات المدعومة">
+          <span>13.02</span><span>13.04</span><span>13.50</span><span>13.52</span>
+        </div>
+
+        <div class="status-card" aria-live="polite">
+          <div id="state">جارٍ التحقق من إصدار النظام...</div>
+          <div id="det"></div>
+          <div id="cache">جارٍ فحص ملفات التشغيل...</div>
+        </div>
+
+        <button class="run" id="run" type="button" disabled>
+          <span class="play">▶</span><span id="run-label">انتظر قليلًا</span>
+        </button>
+        <p class="hint">عند ظهور «جاهز للتشغيل» اضغط الزر X. لا تغلق الصفحة أثناء التحميل.</p>
+        <a class="contact" href="tel:0944227117" aria-label="اتصل بمتجر GameYard على الرقم 0944227117">0944227117</a>
+      </section>
+    </main>
+
+    <footer>GameYard • Tripoli • Interface by GameYard • Core by RAW GAME</footer>
+  </div>
+
+  <script>
+  (function () {
+      var stateEl = document.getElementById("state");
+      var detEl = document.getElementById("det");
+      var cacheEl = document.getElementById("cache");
+      var runEl = document.getElementById("run");
+      var runLabelEl = document.getElementById("run-label");
+      var params = new URLSearchParams(location.search);
+      var action = null;
+      var launched = false;
+
+      function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
+      function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
+      function arm(label, fn) {
+          action = fn;
+          runLabelEl.textContent = label;
+          runEl.disabled = false;
+          try { runEl.focus(); } catch (e) {}
+      }
+      function disarm(label) {
+          action = null;
+          runLabelEl.textContent = label;
+          runEl.disabled = true;
+      }
+      function fire() {
+          if (!action || launched) return;
+          var fn = action;
+          launched = true;
+          disarm("جارٍ التشغيل...");
+          fn();
+      }
+      runEl.addEventListener("click", fire, false);
+      window.addEventListener("keydown", function (event) {
+          if (!runEl.disabled && (!event || event.keyCode === 13 || event.keyCode === 32)) fire();
+      }, false);
+
+      // Keep this list in sync with the measured kernel tables in ps4_offsets.js.
+      var SUPPORTED = { 1302: 1, 1304: 1, 1350: 1, 1352: 1 };
+      var key = null, fwnum = null;
+      var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+      if (m) {
+          var ms = parseInt(m[2], 16).toString(16);
+          if (ms.length < 2) ms = "0" + ms;
+          key = m[1] + "." + ms;
+          fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
+      }
+
+      var forced = params.get("force") === "1";
+      var supported = forced || (fwnum !== null && SUPPORTED[fwnum] === 1);
+      detEl.innerHTML = "FIRMWARE <b>" + (key || "UNKNOWN") + "</b>"
+          + (supported ? " &nbsp;•&nbsp; <b>SUPPORTED</b>" : " &nbsp;•&nbsp; NOT IN KERNEL TABLE");
+
+      var target = "jb.html" + location.search;
+      function go() {
+          setState("جارٍ تشغيل HEN... لا تغلق الصفحة", "warn");
+          location.replace(target);
+      }
+      function ready(text) {
+          setState(text || "جاهز للتشغيل", "ok");
+          arm("تشغيل الآن", go);
+      }
+
+      if (!supported) {
+          setState("هذا الإصدار غير مدعوم رسميًا", "bad");
+          setCache("يمكن المتابعة يدويًا، لكن قد تفشل العملية أو يطلب الجهاز إعادة تشغيل.", false);
+          arm("تشغيل على أي حال", go);
+          return;
+      }
+
+      setState("الإصدار مدعوم — جارٍ تجهيز الملفات", "ok");
+      var ac = window.applicationCache;
+      if (!ac || !document.documentElement.hasAttribute("manifest")) {
+          setCache("التخزين دون اتصال غير متاح في هذا المتصفح.", false);
+          ready("جاهز للتشغيل عبر الإنترنت");
+      } else if (!navigator.onLine) {
+          setCache("وضع دون اتصال — الملفات محفوظة", true);
+          ready("جاهز للتشغيل دون اتصال");
+      } else if (ac.status === ac.IDLE) {
+          setCache("الملفات محفوظة — جاهز دون اتصال", true);
+          ready("جاهز للتشغيل");
+      } else if (ac.status === ac.UPDATEREADY) {
+          try { ac.swapCache(); } catch (e) {}
+          setState("يتوفر تحديث جديد", "warn");
+          setCache("تم تنزيل التحديث. أعد تحميل الصفحة قبل التشغيل.", true);
+          arm("تحديث ثم تشغيل", function () { location.reload(); });
+      } else {
+          disarm("جارٍ حفظ الملفات...");
+          setCache("جارٍ فحص التخزين دون اتصال...");
+          ac.addEventListener("downloading", function () {
+              setCache("جارٍ حفظ ملفات التشغيل لأول مرة...");
+          }, false);
+          ac.addEventListener("progress", function (e) {
+              if (e && e.total) setCache("جارٍ حفظ الملفات " + Math.round((e.loaded / e.total) * 100) + "%");
+          }, false);
+          ac.addEventListener("cached", function () {
+              setCache("تم حفظ الملفات — يمكنك الاستخدام دون اتصال", true);
+              ready("اكتمل التجهيز — جاهز للتشغيل");
+          }, false);
+          ac.addEventListener("updateready", function () {
+              try { ac.swapCache(); } catch (e) {}
+              setState("يتوفر تحديث جديد", "warn");
+              setCache("تم تنزيل التحديث. أعد تحميل الصفحة قبل التشغيل.", true);
+              arm("تحديث ثم تشغيل", function () { location.reload(); });
+          }, false);
+          ac.addEventListener("noupdate", function () {
+              setCache("الملفات محفوظة — جاهز دون اتصال", true);
+              ready("جاهز للتشغيل");
+          }, false);
+          ac.addEventListener("error", function () {
+              setState("تعذر حفظ نسخة دون اتصال", "warn");
+              setCache("أبقِ الإنترنت متصلًا ثم يمكنك المتابعة.", false);
+              arm("تشغيل الآن", go);
+          }, false);
+          ac.addEventListener("obsolete", function () {
+              setState("ذاكرة التخزين بحاجة إلى تحديث", "warn");
+              setCache("يمكن المتابعة الآن وإعادة المحاولة لاحقًا.", false);
+              arm("تشغيل الآن", go);
+          }, false);
+      }
+  })();
+  </script>
+</body>
+</html>
